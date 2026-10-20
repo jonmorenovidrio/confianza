@@ -33,14 +33,14 @@
 </head>
 <body>
 <h1>Encuesta sobre Confianza en las instituciones</h1>
-<p>
-  A continuación se presentan una serie de preguntas relacionadas con la confianza en diversas instituciones.
-  Para nosotros su opinión es muy importante. Sus respuestas serán utilizadas solo con fines académicos.
+<p id="presentacionEncuesta">
+  Te invitamos a participar en un estudio académico sobre la confianza ciudadana en las instituciones públicas de Sinaloa y los nombramientos de quienes ocupan determinados cargos públicos.
   <br><br>
-  Por favor, conteste todas las preguntas marcando la opción que usted considere. No existen respuestas malas o buenas, solo es su opinión.
+  Tu participación consiste en responder algunas preguntas sobre estos temas. No hay respuestas correctas o incorrectas; nos interesa conocer tu opinión. La participación es voluntaria y la información se utilizará con fines académicos y de investigación.
 </p>
 
-<form id="formularioEncuesta" name="formularioEncuesta" method="POST" action="">
+<form id="formularioEncuesta" name="formularioEncuesta" method="POST" action="" novalidate accept-charset="UTF-8">
+  <input type="hidden" name="id_envio" id="id_envio" value="">
   <input type="hidden" name="perfilSeleccionado" id="perfilSeleccionado">
   <input type="hidden" name="intentos_cambio_pestana" id="intentos_cambio_pestana" value="0">
   <input type="hidden" name="filtro_elegibilidad" id="filtro_elegibilidad" value="">
@@ -62,8 +62,8 @@
           <tr><td>1.2 Los vecinos de su colonia o comunidad</td>
             <td><input type="radio" name="confianza_vecinos" value="1. Mucha confianza" required aria-label="Vecinos: mucha confianza"></td><td><input type="radio" name="confianza_vecinos" value="2. Algo de confianza" aria-label="Vecinos: algo de confianza"></td><td><input type="radio" name="confianza_vecinos" value="3. Algo de desconfianza" aria-label="Vecinos: algo de desconfianza"></td><td><input type="radio" name="confianza_vecinos" value="4. Mucha desconfianza" aria-label="Vecinos: mucha desconfianza"></td><td><input type="radio" name="confianza_vecinos" value="5. No sabe" aria-label="Vecinos: no sabe"></td>
           </tr>
-          <tr><td>1.3 El Ayuntamiento de Culiacán</td>
-            <td><input type="radio" name="confianza_ayuntamiento" value="1. Mucha confianza" required aria-label="Ayuntamiento: mucha confianza"></td><td><input type="radio" name="confianza_ayuntamiento" value="2. Algo de confianza" aria-label="Ayuntamiento: algo de confianza"></td><td><input type="radio" name="confianza_ayuntamiento" value="3. Algo de desconfianza" aria-label="Ayuntamiento: algo de desconfianza"></td><td><input type="radio" name="confianza_ayuntamiento" value="4. Mucha desconfianza" aria-label="Ayuntamiento: mucha desconfianza"></td><td><input type="radio" name="confianza_ayuntamiento" value="5. No sabe" aria-label="Ayuntamiento: no sabe"></td>
+          <tr><td>1.3 El Gobierno Municipal</td>
+            <td><input type="radio" name="confianza_ayuntamiento" value="1. Mucha confianza" required aria-label="Gobierno Municipal: mucha confianza"></td><td><input type="radio" name="confianza_ayuntamiento" value="2. Algo de confianza" aria-label="Gobierno Municipal: algo de confianza"></td><td><input type="radio" name="confianza_ayuntamiento" value="3. Algo de desconfianza" aria-label="Gobierno Municipal: algo de desconfianza"></td><td><input type="radio" name="confianza_ayuntamiento" value="4. Mucha desconfianza" aria-label="Gobierno Municipal: mucha desconfianza"></td><td><input type="radio" name="confianza_ayuntamiento" value="5. No sabe" aria-label="Gobierno Municipal: no sabe"></td>
           </tr>
           <tr><td>1.4 El Gobierno del Estado de Sinaloa</td>
             <td><input type="radio" name="confianza_estado" value="1. Mucha confianza" required aria-label="Gobierno estatal: mucha confianza"></td><td><input type="radio" name="confianza_estado" value="2. Algo de confianza" aria-label="Gobierno estatal: algo de confianza"></td><td><input type="radio" name="confianza_estado" value="3. Algo de desconfianza" aria-label="Gobierno estatal: algo de desconfianza"></td><td><input type="radio" name="confianza_estado" value="4. Mucha desconfianza" aria-label="Gobierno estatal: mucha desconfianza"></td><td><input type="radio" name="confianza_estado" value="5. No sabe" aria-label="Gobierno estatal: no sabe"></td>
@@ -201,9 +201,24 @@
       <label class="pregunta" for="partido">¿Con cuál partido?</label>
       <input type="text" name="partido" id="partido">
     </div>
+
+    <p>
+      Si deseas recibir información sobre los resultados de esta investigación cuando estén disponibles, puedes dejar tu correo electrónico. Proporcionarlo es voluntario y no es necesario para finalizar la encuesta.
+    </p>
+
+    <label class="pregunta">¿Te gustaría recibir los resultados de la investigación por correo electrónico?</label>
+    <label class="opcion"><input type="radio" name="recibir_resultados" value="Sí"> Sí, me gustaría recibirlos.</label>
+    <label class="opcion"><input type="radio" name="recibir_resultados" value="No"> No, gracias.</label>
+
+    <div id="correo_div" hidden>
+      <label class="pregunta" for="correo_resultados">Correo electrónico (opcional)</label>
+      <input type="email" name="correo_resultados" id="correo_resultados" autocomplete="email" aria-describedby="ayudaCorreo">
+      <p class="ayuda" id="ayudaCorreo">Puedes dejar este campo vacío y enviar la encuesta de todos modos.</p>
+    </div>
+
     <div class="submit-container">
-      <input type="submit" value="Enviar respuestas">
-      <p class="ayuda">El envío se habilitará después de vincular este formulario con la nueva hoja de cálculo de Google.</p>
+      <input type="submit" value="Enviar encuesta">
+      <p id="estadoEnvio" class="ayuda" role="status" aria-live="polite" hidden></p>
     </div>
   </section>
 
@@ -213,8 +228,10 @@
   </div>
 </form>
 
-<div id="mensajeFinal" class="mensaje-final" hidden>
-  <p>Gracias por tu participación. En esta ocasión, el cuestionario ha concluido. Agradecemos el tiempo que dedicaste a responder.</p>
+<div id="mensajeFinal" class="mensaje-final" hidden role="status" aria-live="polite">
+  <h2>¡Gracias por participar!</h2>
+  <p>Tus respuestas se han registrado correctamente. Agradecemos el tiempo dedicado a esta investigación académica.</p>
+  <p class="ayuda" id="aclaracionFicticia" hidden>Las noticias y los perfiles de designación presentados fueron escenarios hipotéticos elaborados con fines académicos; no describen nombramientos reales.</p>
 </div>
 
 <script>
@@ -225,6 +242,10 @@
   const continuar = document.getElementById('continuar');
   const navegacion = document.getElementById('navegacion');
   const mensajeFinal = document.getElementById('mensajeFinal');
+  const presentacionEncuesta = document.getElementById('presentacionEncuesta');
+  const estadoEnvio = document.getElementById('estadoEnvio');
+  const botonEnviar = form.querySelector('input[type="submit"]');
+  let enviando = false;
   let bloqueActual = 0;
   let cambioPestana = 0;
   let alertaMostrada = false;
@@ -235,14 +256,33 @@
     "activista": `El Congreso de Sinaloa Designó a Jorge Inzunza como presidente de la Comisión Estatal de Derechos Humanos.\n\nA finales de los años 70s y principios de los 80s, Jorge Inzunza fue parte del Frente Nacional Contra la Represión que encabezó la lucha por la amnistía a los presos, perseguidos, exiliados y desaparecidos políticos por parte del Estado. En 2010 fundó la Asociación Civil Red por los Derechos Humanos de Sinaloa, de la cual ha sido director desde entonces. Durante su gestión ha acompañado a cientos de familias desplazadas por la violencia en diferentes zonas del estado, así como a familiares de personas desaparecidas. Ha sido parte del Consejo Consultivo de la Comisión Estatal de Derechos Humanos en dos ocasiones, así como consejero en diferentes Organizaciones de la Sociedad Civil relacionadas con los derechos Humanos. Tiene una licenciatura en economía y ha realizado diferentes diplomados y cursos sobre derechos humanos.`,
     "experto": `El Congreso de Sinaloa Designó a Jorge Inzunza como presidente de la Comisión Estatal de Derechos Humanos.\n\nJorge Inzunza, se ha desempeñado como Consultor Independiente en Diversidad, Equidad, Inclusión y Derechos Humanos, del Sector Privado y Académico desde el año 2008. Ha trabajado con empresas internacionales y locales, en el establecimiento de áreas internas, políticas y estrategias para hacer de los espacios laborales más incluyentes, equitativos y respetuosos de los derechos humanos, así como en sus relaciones con las comunidades y clientes. De 2006 a 2010 se desempeñó como Asesor Jurídico de la Defensoría de los Derechos Universitarios de la UAS. Ha sido profesor de Derechos Humanos en diferentes posgrados de universidades como la Escuela Libre de Derecho, la Universidad Autónoma de Durango y la UAS. Cuenta con una licenciatura en Derecho, una Maestría en Ciencias Sociales y un Doctorado en Derechos Humanos por la Universidad de Guadalajara.`,
     "servidor_publico": `El Congreso de Sinaloa Designó a Jorge Inzunza como presidente de la Comisión Estatal de Derechos Humanos.\n\nAntes de ser designado, Jorge Inzunza se desempeñaba como Visitador Adjunto de la Zona Sur de la Comisión Estatal de Derechos Humanos desde el año 2021. Además, se ha desempeñado como Asesor Jurídico del Centro de Atención Integral en Sinaloa de la Comisión Ejecutiva de Atención a Víctimas del Gobierno Federal, del 2015 a 2020. También se desempeñó como Coordinador General Técnico de la Fiscalía Especial para Delitos de Violencia contra las Mujeres y Trata de Personas de la PGR, del 2010 al 2014. Es licenciado en Derecho y cuenta con una Maestría en Derecho Constitucional y Amparo. Además, ha realizado diferentes cursos de actualización profesional en las instituciones donde se ha desempeñado.`,
-    "politico_confianza": `El Congreso de Sinaloa Designó a Jorge Inzunza como presidente de la Comisión Estatal de Derechos Humanos.\n\nJorge Inzunza ha tenido una larga carrera política. Se desempeñó como director de Parques y Jardines del Ayuntamiento de Culiacán de 1996 a 1998. Director de Obras Públicas del Gobierno del Estado de 1999 al 2001. Ha sido Regidor del Ayuntamiento de Culiacán del 2001 al 2004, Diputado Local plurinominal del 2007 al 2010 y Diputado Federal plurinominal por el Estado de Nayarit del 2012 al 2015. De 2018 a 2020, se desempeñó como jefe del Programa Infraestructura en la Delegación en Nayarit de la Secretaría de Desarrollo Agrario, Territorial y Urbano (SEDATU). Inzunza estudió hasta el séptimo semestre de Ingeniería Agronómica en la UAS.`,
+    "politico_confianza": `El Congreso de Sinaloa designó a Jorge Inzunza como presidente de la Comisión Estatal de Derechos Humanos.\n\nJorge Inzunza ha tenido una larga carrera política. Se desempeñó como director de Parques y Jardines del Ayuntamiento de Culiacán de 1996 a 1998 y director de Obras Públicas del Gobierno del Estado de 1999 a 2001. Ha sido regidor del Ayuntamiento de Culiacán de 2001 a 2004, diputado local plurinominal de 2007 a 2010 y diputado federal plurinominal por el Estado de Nayarit de 2012 a 2015. De 2018 a 2020, se desempeñó como jefe del Programa Infraestructura en la Delegación en Nayarit de la Secretaría de Desarrollo Agrario, Territorial y Urbano (SEDATU). Varios de los cargos públicos que ha ocupado los obtuvo gracias a su cercanía con políticos que llegaron al gobierno y que lo invitaron a formar parte de sus equipos de trabajo. Inzunza estudió hasta el séptimo semestre de Ingeniería Agronómica en la Universidad Autónoma de Sinaloa.`,
     "politico_partidista": `El Congreso de Sinaloa Designó a Jorge Inzunza como presidente de la Comisión Estatal de Derechos Humanos.\n\nJorge Inzunza se ha desempeñado como Asesor del Grupo Parlamentario de Morena en la 64 legislatura del 2022 al 2024. Presidente del Comité Ejecutivo Municipal de Tepic de 2016 a 2020. Secretario Electoral del Comité Ejecutivo Municipal de Morena en Escuinapa de 2014 a 2015. Enlace Federal de Morena en Nayarit, 2012 a 2013. Estudió la licenciatura en Educación Primaria en la Escuela Normal de Sinaloa.`,
     "cliente_militante": `El Congreso de Sinaloa Designó a Jorge Inzunza como presidente de la Comisión Estatal de Derechos Humanos.\n\nAntes de ser designado, Jorge Inzunza se desempeñaba como Visitador Adjunto de la Zona Sur de la Comisión Estatal de Derechos Humanos desde el año 2021. Además, se ha desempeñado como Asesor Jurídico del Centro de Atención Integral en Sinaloa de la Comisión Ejecutiva de Atención a Víctimas del Gobierno Federal, del 2015 a 2020. También se desempeñó como Coordinador General Técnico de la Fiscalía Especial para Delitos de Violencia contra las Mujeres y Trata de Personas de la PGR, del 2010 al 2014. Es licenciado en Derecho y cuenta con una Maestría en Derecho Constitucional y Amparo. Además, ha realizado diferentes cursos de actualización profesional en las instituciones donde se ha desempeñado. Es militante del Partido Morena desde el año 2014 y ha sido representante de partido en la elección federal de 2015 y la de 2018.`
   };
   const clavesHistorias = Object.keys(historias);
-  const seleccionHistoria = clavesHistorias[Math.floor(Math.random() * clavesHistorias.length)];
-  document.getElementById('historiaTexto').textContent = historias[seleccionHistoria];
-  document.getElementById('perfilSeleccionado').value = seleccionHistoria;
+  // CONFIGURACIÓN: pegar URL del despliegue /exec de Google Apps Script.
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_MHvFUSmi_g7PCY8oG9sXr7_y-N_C_5SpYss1C8ZqzivD_KcZcRqjnBq4XGUAMcsiiA/exec';
+  // El envío y su confirmación se verifican sin abandonar esta página.
+  // Apps Script debe incluir doPost() y doGet() de la versión final de Codigo.gs.
+  form.action = APPS_SCRIPT_URL;
+  // Se genera una asignación únicamente después de superar el filtro.
+  let seleccionHistoria = '';
+  function asignarHistoria() {
+    if (seleccionHistoria) return;
+    seleccionHistoria = clavesHistorias[Math.floor(Math.random() * clavesHistorias.length)];
+    document.getElementById('historiaTexto').textContent = historias[seleccionHistoria];
+    document.getElementById('perfilSeleccionado').value = seleccionHistoria;
+  }
+  function limpiarHistoria() {
+    seleccionHistoria = '';
+    document.getElementById('historiaTexto').textContent = '';
+    document.getElementById('perfilSeleccionado').value = '';
+  }
+  // ID único para detectar reenvíos accidentales. Se mantiene al volver atrás.
+  document.getElementById('id_envio').value = (window.crypto && window.crypto.randomUUID)
+    ? window.crypto.randomUUID()
+    : 'envio-' + Date.now() + '-' + Math.random().toString(36).slice(2);
 
   function valorRadio(nombre) {
     const seleccionado = form.querySelector(`input[name="${nombre}"]:checked`);
@@ -260,6 +300,18 @@
 
   form.querySelectorAll('input[name="militancia"]').forEach(el => el.addEventListener('change', actualizarPartido));
 
+  function actualizarCorreo() {
+    const mostrar = valorRadio('recibir_resultados') === 'Sí';
+    const div = document.getElementById('correo_div');
+    const campo = document.getElementById('correo_resultados');
+    div.hidden = !mostrar;
+    // El correo nunca es obligatorio, incluso cuando la persona desea recibir resultados.
+    campo.required = false;
+    if (!mostrar) campo.value = '';
+  }
+
+  form.querySelectorAll('input[name="recibir_resultados"]').forEach(el => el.addEventListener('change', actualizarCorreo));
+
   function evaluarFiltro() {
     const respuestaOscar = valorRadio('reconoce_oscar');
     document.getElementById('personas_seguimiento').value = '';
@@ -269,19 +321,22 @@
       // Quienes conocen a Óscar omiten la noticia y sus preguntas, pero responden los datos estadísticos.
       document.getElementById('filtro_elegibilidad').value = 'Conoce a Óscar Loza Ochoa; pasó directamente a datos estadísticos';
       rutaDirectaDatos = true;
+      limpiarHistoria();
       mostrarBloque(4);
       return false;
     }
 
     // Quienes no conocen a Óscar continúan con las preguntas de percepción y la noticia.
     document.getElementById('filtro_elegibilidad').value = 'No conoce a Óscar Loza Ochoa; continúa con el cuestionario';
+    rutaDirectaDatos = false;
+    asignarHistoria();
     return true;
   }
 
   function validarBloque(indice) {
     const bloque = bloques[indice];
     const campos = Array.from(bloque.querySelectorAll('input, select, textarea'))
-      .filter(el => !el.disabled && el.type !== 'hidden' && el.offsetParent !== null);
+      .filter(el => !el.disabled && el.type !== 'hidden' && !el.closest('#partido_div[hidden], #correo_div[hidden]'));
     for (const campo of campos) {
       if (!campo.checkValidity()) {
         campo.reportValidity();
@@ -294,6 +349,8 @@
   function mostrarBloque(indice) {
     bloques.forEach((bloque, i) => { bloque.hidden = i !== indice; });
     bloqueActual = indice;
+    presentacionEncuesta.hidden = indice !== 0;
+    estadoEnvio.hidden = true;
     anterior.disabled = indice === 0 || (rutaDirectaDatos && indice === 4);
     anterior.hidden = rutaDirectaDatos && indice === 4;
     continuar.hidden = indice === bloques.length - 1;
@@ -316,16 +373,105 @@
     if (bloqueActual < bloques.length - 1) mostrarBloque(bloqueActual + 1);
   });
 
-  form.addEventListener('submit', event => {
-    // Conexión de Apps Script intencionalmente pendiente.
-    // Se evita recargar la página o perder las respuestas mientras se configura el nuevo destino.
+  // Confirmación verificable sin salir del cuestionario:
+  // POST anónimo + comprobación mediante un identificador único (doGet de Apps Script).
+  // Una respuesta opaca de fetch (no-cors) NO demuestra que el guardado ocurrió;
+  // únicamente el recibo leído desde Google Sheets confirma el registro.
+  function consultaRecibo(id) {
+    return new Promise((resolve, reject) => {
+      const callback = 'onRecibo_' + Math.random().toString(36).slice(2).replace(/[^a-z0-9]/g, '');
+      const script = document.createElement('script');
+      let terminado = false;
+      const limpiar = () => {
+        delete window[callback];
+        script.remove();
+        clearTimeout(espera);
+      };
+      const concluir = (error, dato) => {
+        if (terminado) return;
+        terminado = true;
+        limpiar();
+        if (error) reject(error); else resolve(dato === true);
+      };
+      // Apps Script devuelve solo un booleano, sin datos personales.
+      window[callback] = resultado => concluir(null, resultado && resultado.registrado === true);
+      script.onerror = () => concluir(new Error('No se pudo consultar el recibo'));
+      const espera = setTimeout(() => concluir(new Error('Consulta de recibo agotada')), 9000);
+      script.src = APPS_SCRIPT_URL + '?recibo=' + encodeURIComponent(id)
+        + '&callback=' + encodeURIComponent(callback) + '&t=' + Date.now();
+      document.head.appendChild(script);
+    });
+  }
+
+  const esperar = ms => new Promise(resolver => setTimeout(resolver, ms));
+
+  async function confirmarGuardado(id) {
+    // Apps Script puede tardar unos segundos en escribir en Sheets.
+    for (let intento = 0; intento < 7; intento++) {
+      try {
+        if (await consultaRecibo(id)) return true;
+      } catch (error) {
+        // La consulta puede fallar temporalmente: volvemos a comprobar.
+      }
+      if (intento < 6) await esperar(1600);
+    }
+    return false;
+  }
+
+  form.addEventListener('submit', async event => {
     event.preventDefault();
-    if (bloqueActual !== bloques.length - 1 || !validarBloque(bloqueActual)) return;
-    if (!filtroEvaluado) {
-      alert('No se pudo confirmar el filtro de selección. Regrese al bloque anterior y continúe de nuevo.');
+    if (enviando) return;
+    estadoEnvio.hidden = true;
+    if (bloqueActual !== 4 || !filtroEvaluado) {
+      alert('Completa los bloques del cuestionario antes de enviarlo.');
       return;
     }
-    alert('El cuestionario está listo, pero todavía no está conectado a Google Sheets. Las respuestas no se han enviado ni guardado.');
+    const ruta = rutaDirectaDatos ? [0, 1, 4] : [0, 1, 2, 3, 4];
+    for (const indice of ruta) {
+      // Hacer visible la sección antes de validar, para mostrar errores legibles.
+      if (indice !== bloqueActual) mostrarBloque(indice);
+      if (!validarBloque(indice)) return;
+    }
+    mostrarBloque(4);
+    if (!rutaDirectaDatos && !seleccionHistoria) {
+      alert('No fue posible asignar la historia. Regresa al bloque de reconocimiento.');
+      return;
+    }
+    if (rutaDirectaDatos) limpiarHistoria();
+    if (!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/.test(APPS_SCRIPT_URL)) {
+      alert('La dirección de recepción del cuestionario aún no está configurada.');
+      return;
+    }
+    // La página sigue abierta: si falla la red, las respuestas continúan aquí.
+    // Conservamos id_envio para que reintentar no duplique registros.
+    enviando = true;
+    botonEnviar.disabled = true;
+    botonEnviar.value = 'Enviando…';
+    estadoEnvio.hidden = false;
+    estadoEnvio.textContent = 'Estamos guardando tus respuestas. No cierres esta ventana.';
+    const id = document.getElementById('id_envio').value;
+    try {
+      const cuerpo = new URLSearchParams(new FormData(form));
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: cuerpo,
+        cache: 'no-store'
+      });
+      const confirmado = await confirmarGuardado(id);
+      if (!confirmado) throw new Error('Sin confirmación del guardado');
+      form.hidden = true;
+      document.getElementById('aclaracionFicticia').hidden = rutaDirectaDatos;
+      mensajeFinal.hidden = false;
+      mensajeFinal.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (error) {
+      estadoEnvio.hidden = false;
+      estadoEnvio.textContent = 'No fue posible confirmar el registro de tus respuestas. Verifica tu conexión y vuelve a presionar «Enviar encuesta». Tus respuestas permanecen en el formulario.';
+      botonEnviar.disabled = false;
+      botonEnviar.value = 'Enviar encuesta';
+    } finally {
+      enviando = false;
+    }
   });
 
   document.addEventListener('visibilitychange', () => {
@@ -339,6 +485,8 @@
     }
   });
 
+  actualizarPartido();
+  actualizarCorreo();
   mostrarBloque(0);
 })();
 </script>
