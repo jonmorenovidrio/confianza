@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prueba de carga — Encuesta CEDH</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f5f7fa;font-family:Arial,Helvetica,sans-serif;color:#14243a;line-height:1.5}
+    main{max-width:640px;margin:24px auto;padding:22px;background:#fff;border:1px solid #dae1e8;border-radius:12px}
+    h1{font-size:1.45rem;line-height:1.25;margin-top:0}p{margin:12px 0}.dato{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;padding:13px 0;border-bottom:1px solid #e1e6ee}.dato strong{font-size:1.1rem}
+    .nota{font-size:.95rem;color:#455569}.ok{padding:11px;background:#eaf5ec;border-radius:7px;font-weight:600}a{color:#075ca8}
+  </style>
+</head>
+<body>
+<main>
+  <h1>Prueba de velocidad de carga</h1>
+  <p class="ok">Esta página se ha abierto correctamente.</p>
+  <p>Esta prueba se ejecuta únicamente en tu dispositivo. No recopila respuestas, ubicación, correo ni otros datos personales.</p>
+  <div class="dato"><span>Respuesta inicial de GitHub</span><strong id="ttfb">Calculando…</strong></div>
+  <div class="dato"><span>Documento HTML preparado</span><strong id="dom">Calculando…</strong></div>
+  <div class="dato"><span>Carga completa de esta página</span><strong id="carga">Calculando…</strong></div>
+  <div class="dato"><span>Primera visualización del texto (si está disponible)</span><strong id="fcp">Calculando…</strong></div>
+  <p class="nota">Los tiempos se expresan en segundos desde que el navegador inició la navegación. La página de prueba es deliberadamente pequeña: compara su apertura con la de la encuesta original en la misma conexión y navegador.</p>
+  <p><a href="./">Abrir la encuesta original</a></p>
+</main>
+<script>
+(function(){
+  const formato = v => Number.isFinite(v) && v >= 0 ? (v/1000).toFixed(2) + ' s' : 'No disponible';
+  function mostrar(){
+    const nav = performance.getEntriesByType('navigation')[0];
+    if(nav){
+      document.getElementById('ttfb').textContent = formato(nav.responseStart);
+      document.getElementById('dom').textContent = formato(nav.domContentLoadedEventEnd);
+      document.getElementById('carga').textContent = formato(nav.loadEventEnd || performance.now());
+    } else {
+      ['ttfb','dom','carga'].forEach(id => document.getElementById(id).textContent = 'No disponible');
+    }
+    const pintados = performance.getEntriesByType('paint');
+    const fcp = pintados.find(entry => entry.name === 'first-contentful-paint');
+    document.getElementById('fcp').textContent = fcp ? formato(fcp.startTime) : 'No disponible en este navegador';
+  }
+  window.addEventListener('load',() => requestAnimationFrame(() => requestAnimationFrame(mostrar)));
+})();
+</script>
+</body>
+</html>
